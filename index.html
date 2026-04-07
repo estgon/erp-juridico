@@ -99,7 +99,7 @@
             <input type="color" id="colorPicker" onchange="mudarCorDestaque(this.value)" title="Cor de Destaque">
             <button class="theme-btn" onclick="toggleDarkMode()">🌓 Modo Escuro</button>
         </div>
-        <h1>Sistema de Gestão Jurídica</h1>
+        <h1>Sistema de Gestão de Cálculos</h1>
         <p>Controle Integrado de Processos e Prazos</p>
     </div>
 
@@ -114,8 +114,8 @@
             <div class="form-group" style="max-width: 250px; margin-bottom: 25px;">
                 <label>Onde gravar?</label>
                 <select id="tabela" onchange="alternarCampos()">
-                    <option value="Planilha1">📋 Planilha 1 (Processos)</option>
-                    <option value="Planilha2">⏳ Planilha 2 (Prazos)</option>
+                    <option value="Planilha1">📋 Processos</option>
+                    <option value="Planilha2">⏳ Prazos</option>
                 </select>
             </div>
             <div id="campos"></div>
@@ -134,7 +134,7 @@
                 <button class="btn btn-pesquisar" onclick="buscar()">🔎 Pesquisar</button>
             </div>
         </div>
-        <p id="statusBusca" class="loader">A cruzar informações relacionais... ⏳</p>
+        <p id="statusBusca" class="loader">Buscando dados... ⏳</p>
         <div id="resultadoBusca">
             <p style="text-align:center; color:var(--text-muted); padding: 40px 0;">Introduza um termo acima para iniciar a pesquisa.</p>
         </div>
