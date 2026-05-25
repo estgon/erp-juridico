@@ -30,8 +30,8 @@
         }
 
         /* 2. RESET E LAYOUT BASE */
-        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; transition: background-color 0.3s, color 0.3s; }
-        body { background-color: var(--bg-body); padding: 20px; margin: 0; color: var(--text-main); }
+        * { box-sizing: border-box; font-family: 'Segoe UI', system-ui, sans-serif; }
+        body { background-color: var(--bg-body); padding: 20px; margin: 0; color: var(--text-main); transition: background-color 0.3s, color 0.3s; }
         .container { max-width: 1000px; margin: 0 auto; background: var(--bg-container); border-radius: 10px; box-shadow: 0 5px 25px rgba(0,0,0,0.2); overflow: hidden; }
         
         /* 3. HEADER E TEMAS */
@@ -41,12 +41,12 @@
         
         .theme-controls { position: absolute; top: 15px; right: 20px; display: flex; gap: 12px; align-items: center; }
         #colorPicker { cursor: pointer; border: 2px solid white; border-radius: 50%; width: 25px; height: 25px; background: none; padding: 0; }
-        .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; cursor: pointer; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; }
+        .theme-btn { background: rgba(255,255,255,0.2); border: none; color: white; cursor: pointer; padding: 6px 12px; border-radius: 20px; font-size: 12px; font-weight: bold; transition: background-color 0.2s; }
         .theme-btn:hover { background: rgba(255,255,255,0.3); }
 
         /* 4. TABS E NAVEGAÇÃO */
         .tabs { display: flex; background-color: var(--bg-tab); border-bottom: 2px solid var(--border-color); }
-        .tab-btn { flex: 1; padding: 18px; border: none; background: none; font-size: 15px; font-weight: bold; color: var(--text-muted); cursor: pointer; transition: 0.2s; }
+        .tab-btn { flex: 1; padding: 18px; border: none; background: none; font-size: 15px; font-weight: bold; color: var(--text-muted); cursor: pointer; transition: background-color 0.2s, color 0.2s; }
         .tab-btn:hover { background-color: rgba(0,0,0,0.05); }
         .tab-btn.active { background-color: var(--bg-container); color: var(--primary-color); border-bottom: 4px solid var(--primary-color); }
 
@@ -63,6 +63,7 @@
         .form-group input, .form-group select { 
             padding: 12px; border-radius: 6px; border: 1px solid var(--border-color); 
             background-color: var(--bg-input); color: var(--text-main); font-size: 14px;
+            transition: border-color 0.2s, box-shadow 0.2s;
         }
         .form-group input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 0 3px rgba(0,0,0,0.05); }
 
@@ -77,18 +78,26 @@
 
         /* 7. BOTÕES E UI */
         .btn-row { display: flex; justify-content: flex-end; gap: 12px; margin-top: 20px; }
-        .btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; display: inline-flex; align-items: center; gap: 8px; }
+        .btn { padding: 12px 24px; border: none; border-radius: 6px; cursor: pointer; font-weight: bold; color: white; display: inline-flex; align-items: center; gap: 8px; transition: background-color 0.2s; }
         .btn-principal { background-color: var(--primary-color); }
         .btn-pesquisar { background-color: #2a9d8f; }
         .btn-limpar { background-color: #6c757d; }
         .btn-editar { background-color: #e9c46a; color: #1d3557; padding: 6px 10px; border-radius: 4px; }
         .btn-excluir { background-color: var(--accent-color); padding: 6px 10px; border-radius: 4px; }
+        .btn:hover { opacity: 0.9; }
         .acoes-td { white-space: nowrap; text-align: right; width: 100px; }
 
         /* 8. MODAL E LOADER */
         .loader { color: var(--accent-color); font-weight: bold; text-align: center; margin: 20px 0; display: none; }
-        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 2000; backdrop-filter: blur(3px); }
+        .modal-overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.7); display: none; align-items: center; justify-content: center; z-index: 2000; }
         .modal-box { background: var(--bg-container); padding: 35px; border-radius: 12px; max-width: 420px; width: 90%; text-align: center; }
+
+        /* 9. PAGINAÇÃO */
+        .pagination { display: flex; justify-content: center; gap: 8px; margin-top: 20px; }
+        .pagination button { padding: 8px 12px; border: 1px solid var(--border-color); background: var(--bg-container); color: var(--text-main); cursor: pointer; border-radius: 4px; transition: background-color 0.2s; }
+        .pagination button:hover { background-color: var(--primary-color); color: white; }
+        .pagination button.active { background-color: var(--primary-color); color: white; }
+        .pagination-info { text-align: center; color: var(--text-muted); font-size: 12px; margin-top: 12px; }
     </style>
 </head>
 <body>
@@ -139,14 +148,15 @@
             <p style="text-align:center; color:var(--text-muted); padding: 40px 0;">Introduza um termo acima para iniciar a pesquisa.</p>
         </div>
     </div>
-<div id="aba-todos" class="tab-content">
-    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
-        <h2 style="color: var(--primary-color); margin: 0;">Base de Dados Completa</h2>
-        <button class="btn btn-pesquisar" onclick="carregarTudo()" style="padding: 8px 15px; font-size: 12px;">🔄 Atualizar Lista</button>
+    <div id="aba-todos" class="tab-content">
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px;">
+            <h2 style="color: var(--primary-color); margin: 0;">Base de Dados Completa</h2>
+            <button class="btn btn-pesquisar" onclick="carregarTudo()" style="padding: 8px 15px; font-size: 12px;">🔄 Atualizar Lista</button>
+        </div>
+        <p id="statusTodos" class="loader">A carregar base de dados... ⏳</p>
+        <div id="listaCompleta"></div>
     </div>
-    <p id="statusTodos" class="loader">A carregar base de dados... ⏳</p>
-    <div id="listaCompleta"></div>
-</div></div>
+</div>
 
 <div id="customModal" class="modal-overlay">
     <div class="modal-box">
@@ -158,11 +168,27 @@
 
 <script>
     const URL_API = "https://script.google.com/macros/s/AKfycbydeT5M0ZOUjr3RzvJ5ulJ5TSpZ9ibhFKavsbIheWdih5K5tCkfV5Hr2tnF0DtJX3Gf6g/exec";
+    const FETCH_TIMEOUT = 10000; // 10 segundos timeout
+    const ITEMS_PER_PAGE = 10; // Itens por página de paginação
     
     let processosEncontrados = [];
     let prazosEncontrados = [];
     let modoEdicao = false;
-// Função para verificar se há internet
+    let paginaAtual = 1;
+    let searchTimeout; // Para debouncing
+    let sugestoesCarregadas = false; // Evitar múltiplos carregamentos
+
+    // --- UTILITÁRIO: TIMEOUT PARA FETCH ---
+    function fetchComTimeout(url, options = {}, timeout = FETCH_TIMEOUT) {
+        return Promise.race([
+            fetch(url, options),
+            new Promise((_, reject) => 
+                setTimeout(() => reject(new Error('Timeout: Pedido demorou muito tempo')), timeout)
+            )
+        ]);
+    }
+
+    // --- VERIFICAÇÃO DE CONEXÃO ---
     function estaOnline() {
         return navigator.onLine;
     }
@@ -186,15 +212,30 @@
         }
     }
 
+    // --- ENVIO DE DADOS (FUNÇÃO UNIFICADA) ---
     async function enviar() {
         const tab = document.getElementById('tabela').value;
         const loader = document.getElementById('status');
         
         let dados = {};
         if (tab === "Planilha1") {
-            dados = { id: document.getElementById('idp').value, pro: document.getElementById('proc').value, rec: document.getElementById('reclamante').value, dem: document.getElementById('demanda').value, rda: document.getElementById('reclamada').value, esc: document.getElementById('escritorio').value };
+            dados = { 
+                id: document.getElementById('idp').value, 
+                pro: document.getElementById('proc').value, 
+                rec: document.getElementById('reclamante').value, 
+                dem: document.getElementById('demanda').value,
+                rec2: document.getElementById('reclamada').value,
+                esc: document.getElementById('escritorio').value
+            };
         } else {
-            dados = { idp: document.getElementById('idprazo').value, pro: document.getElementById('proc2').value, dat: document.getElementById('data').value, ati: document.getElementById('atividade').value, sta: document.getElementById('status_prazo').value, obs: document.getElementById('obs').value };
+            dados = { 
+                idp: document.getElementById('idprazo').value, 
+                pro: document.getElementById('proc2').value, 
+                dat: document.getElementById('data').value, 
+                ati: document.getElementById('atividade').value,
+                sta: document.getElementById('status_prazo').value,
+                obs: document.getElementById('obs').value
+            };
         }
 
         const pacote = { acao: modoEdicao ? "atualizar" : "salvar", dados, planilha: tab };
@@ -209,20 +250,22 @@
 
         loader.style.display = "block";
         try {
-            const res = await fetch(URL_API, { method: "POST", body: JSON.stringify(pacote) });
+            const res = await fetchComTimeout(URL_API, { method: "POST", body: JSON.stringify(pacote) });
             const json = await res.json();
             loader.style.display = "none";
             mostrarModal("Sucesso", json.mensagem);
             resetarFormulario();
+            if (modoEdicao) buscar(); // Recarregar se estava em modo edição
         } catch (e) {
-            // Se o fetch falhar mesmo parecendo online (erro de servidor)
+            // Se o fetch falhar mesmo parecendo online (erro de servidor ou timeout)
             salvarNoCache(pacote);
             loader.style.display = "none";
-            mostrarModal("Erro de Servidor", "O Google não respondeu. Guardámos os dados no cache para tentar mais tarde.");
+            mostrarModal("Erro de Servidor", "O Google não respondeu ou demorou muito. Guardámos os dados no cache para tentar mais tarde.");
             resetarFormulario();
         }
     }
 
+    // --- CACHE OFFLINE ---
     function salvarNoCache(pacote) {
         let fila = JSON.parse(localStorage.getItem('fila_sincronizacao')) || [];
         fila.push(pacote);
@@ -235,21 +278,31 @@
 
         console.log("Sincronizando " + fila.length + " itens pendentes...");
         
-        // Enviamos um por um
+        let filaFalhada = []; // Itens que falharam para tentar depois
+        
+        // Enviamos um por um com timeout
         for (let i = 0; i < fila.length; i++) {
             try {
-                await fetch(URL_API, { method: "POST", body: JSON.stringify(fila[i]) });
-                console.log("Item " + i + " sincronizado.");
+                await fetchComTimeout(URL_API, { method: "POST", body: JSON.stringify(fila[i]) });
+                console.log("Item " + i + " sincronizado com sucesso.");
             } catch (e) {
-                console.log("Falha ao sincronizar item " + i + ". Tentarei mais tarde.");
-                return; // Para o loop se falhar novamente
+                console.log("Falha ao sincronizar item " + i + ": " + e.message);
+                filaFalhada.push(fila[i]); // Guarda itens falhados
             }
         }
 
-        // Se chegou aqui, enviou tudo com sucesso
-        localStorage.removeItem('fila_sincronizacao');
-        mostrarModal("Sincronização Completa", "Todos os dados guardados offline foram enviados para a Planilha com sucesso!");
-    } // --- TEMAS E CORES ---
+        // Se há itens que falharam, recoloca apenas esses na fila
+        if (filaFalhada.length > 0) {
+            localStorage.setItem('fila_sincronizacao', JSON.stringify(filaFalhada));
+            console.log(filaFalhada.length + " itens mantêm-se na fila para tentar mais tarde.");
+        } else {
+            // Se chegou aqui, enviou tudo com sucesso
+            localStorage.removeItem('fila_sincronizacao');
+            mostrarModal("Sincronização Completa", "Todos os " + fila.length + " dados guardados offline foram enviados para a Planilha com sucesso!");
+        }
+    }
+
+    // --- TEMAS E CORES ---
     function mudarCorDestaque(cor) {
         document.documentElement.style.setProperty('--primary-color', cor);
         localStorage.setItem('temaCor', cor);
@@ -286,11 +339,11 @@
             div.innerHTML = `
                 <input type="hidden" id="idp">
                 <div class="opcoes-grid">
-                    <div class="form-group"><label>Nº Processo</label><input id="proc" placeholder="Ex: 0001234-2026"></div>
-                    <div class="form-group"><label>Reclamante</label><input id="reclamante"></div>
-                    <div class="form-group"><label>Demanda</label><input id="demanda"></div>
-                    <div class="form-group"><label>Reclamada</label><input id="reclamada"></div>
-                    <div class="form-group"><label>Escritório</label><input id="escritorio"></div>
+                    <div class="form-group"><label>Nº Processo</label><input id="proc" placeholder="Ex: 0001234-2026" maxlength="50"></div>
+                    <div class="form-group"><label>Reclamante</label><input id="reclamante" maxlength="100"></div>
+                    <div class="form-group"><label>Demanda</label><input id="demanda" maxlength="200"></div>
+                    <div class="form-group"><label>Reclamada</label><input id="reclamada" maxlength="100"></div>
+                    <div class="form-group"><label>Escritório</label><input id="escritorio" maxlength="100"></div>
                 </div>`;
         } else {
             div.innerHTML = `
@@ -298,11 +351,11 @@
                 <div class="opcoes-grid">
                     <div class="form-group">
                         <label>Nº Processo</label>
-                        <input id="proc2" list="listaProcessos" placeholder="Pesquisar vinculado..." onfocus="carregarSugestoes()">
+                        <input id="proc2" list="listaProcessos" placeholder="Pesquisar vinculado..." onfocus="carregarSugestoes()" maxlength="50">
                         <datalist id="listaProcessos"></datalist>
                     </div>
                     <div class="form-group"><label>Data Limite</label><input type="date" id="data"></div>
-                    <div class="form-group"><label>Atividade</label><input id="atividade" placeholder="Ex: Contestação"></div>
+                    <div class="form-group"><label>Atividade</label><input id="atividade" placeholder="Ex: Contestação" maxlength="100"></div>
                     <div class="form-group">
                         <label>Status</label>
                         <select id="status_prazo">
@@ -314,17 +367,19 @@
                             <option value="Cancelado">⚪ Cancelado</option>
                         </select>
                     </div>
-                    <div class="form-group"><label>Observações</label><input id="obs"></div>
+                    <div class="form-group"><label>Observações</label><input id="obs" maxlength="300"></div>
                 </div>`;
         }
     }
 
-    // --- COMUNICAÇÃO GOOGLE ---
+    // --- SUGESTÕES COM PROTEÇÃO CONTRA MÚLTIPLAS CHAMADAS ---
     async function carregarSugestoes() {
         const datalist = document.getElementById('listaProcessos');
-        if (datalist.children.length > 0) return;
+        if (sugestoesCarregadas || datalist.children.length > 0) return;
+        
+        sugestoesCarregadas = true;
         try {
-            const res = await fetch(`${URL_API}?acao=getLista`);
+            const res = await fetchComTimeout(`${URL_API}?acao=getLista`);
             const json = await res.json();
             if (json.lista) {
                 datalist.innerHTML = "";
@@ -334,85 +389,124 @@
                     datalist.appendChild(opt);
                 });
             }
-        } catch (e) { console.error("Erro datalist:", e); }
-    }
-
-    async function enviar() {
-        const tab = document.getElementById('tabela').value;
-        const loader = document.getElementById('status');
-        loader.style.display = "block";
-
-        let dados = {};
-        if (tab === "Planilha1") {
-            dados = { id: document.getElementById('idp').value, pro: document.getElementById('proc').value, rec: document.getElementById('reclamante').value, dem: document.getElementById('demanda').value, rda: document.getElementById('reclamada').value, esc: document.getElementById('escritorio').value };
-        } else {
-            dados = { idp: document.getElementById('idprazo').value, pro: document.getElementById('proc2').value, dat: document.getElementById('data').value, ati: document.getElementById('atividade').value, sta: document.getElementById('status_prazo').value, obs: document.getElementById('obs').value };
-        }
-
-        try {
-            const res = await fetch(URL_API, { method: "POST", body: JSON.stringify({ acao: modoEdicao ? "atualizar" : "salvar", dados, planilha: tab }) });
-            const json = await res.json();
-            loader.style.display = "none";
-            mostrarModal("Sucesso", json.mensagem);
-            resetarFormulario();
-            if (modoEdicao) buscar();
-        } catch (e) {
-            loader.style.display = "none";
-            mostrarModal("Erro", "Falha na gravação.");
+        } catch (e) { 
+            console.error("Erro datalist:", e); 
+            sugestoesCarregadas = false;
         }
     }
 
+    // --- BUSCA COM DEBOUNCING ---
     async function buscar() {
         const termo = document.getElementById('busca').value;
         const loader = document.getElementById('statusBusca');
         const divRes = document.getElementById('resultadoBusca');
         
-        loader.style.display = "block";
-        divRes.innerHTML = "";
-
-        try {
-            const res = await fetch(`${URL_API}?termo=${encodeURIComponent(termo)}`);
-            const json = await res.json();
-            loader.style.display = "none";
-
-            processosEncontrados = json.processos || [];
-            prazosEncontrados = json.prazos || [];
-
-            let html = "";
-            if (processosEncontrados.length > 0) {
-                html += `<div class="secao-titulo">📋 Processos Relacionados (${processosEncontrados.length})</div>
-                         <div class="table-responsive"><table>
-                         <tr><th>ID</th><th>Reclamante</th><th>Nº Processo</th><th style="text-align:right;">Ações</th></tr>`;
-                processosEncontrados.forEach((p, i) => {
-                    html += `<tr><td>${p[0]}</td><td>${p[2]}</td><td>${p[4]}</td>
-                             <td class="acoes-td">
-                                <button class="btn btn-editar" onclick="prepararEdicao(${i}, 'Planilha1')">✏️</button>
-                                <button class="btn btn-excluir" onclick="excluirRegisto(${i}, 'Planilha1')">🗑️</button>
-                             </td></tr>`;
-                });
-                html += `</table></div>`;
-            }
-
-            if (prazosEncontrados.length > 0) {
-                html += `<div class="secao-titulo" style="color:var(--accent-color)">⏳ Prazos do Processo (${prazosEncontrados.length})</div>
-                         <div class="table-responsive"><table>
-                         <tr><th class="th-prazos">ID</th><th class="th-prazos">Processo</th><th class="th-prazos">Data</th><th class="th-prazos">Status</th><th class="th-prazos" style="text-align:right;">Ações</th></tr>`;
-                prazosEncontrados.forEach((p, i) => {
-                    let dt = p[2] ? new Date(p[2] + "T12:00:00").toLocaleDateString('pt-BR') : '---';
-                    html += `<tr><td>${p[0]}</td><td>${p[1]}</td><td>${dt}</td><td>${p[4]}</td>
-                             <td class="acoes-td">
-                                <button class="btn btn-editar" onclick="prepararEdicao(${i}, 'Planilha2')">✏️</button>
-                                <button class="btn btn-excluir" onclick="excluirRegisto(${i}, 'Planilha2')">🗑️</button>
-                             </td></tr>`;
-                });
-                html += `</table></div>`;
-            }
-
-            divRes.innerHTML = html || "<p style='text-align:center; padding:40px;'>Nenhum registo encontrado.</p>";
-        } catch (e) {
-            loader.style.display = "none";
-            mostrarModal("Erro", "Erro na pesquisa relacional.");
+        // Limpar timeout anterior para evitar múltiplas requisições
+        clearTimeout(searchTimeout);
+        
+        // Se o campo estiver vazio, mostrar mensagem inicial
+        if (!termo.trim()) {
+            divRes.innerHTML = '<p style="text-align:center; color:var(--text-muted); padding: 40px 0;">Introduza um termo acima para iniciar a pesquisa.</p>';
+            return;
         }
+
+        searchTimeout = setTimeout(async () => {
+            loader.style.display = "block";
+            divRes.innerHTML = "";
+            paginaAtual = 1; // Reset página
+
+            try {
+                const res = await fetchComTimeout(`${URL_API}?termo=${encodeURIComponent(termo)}`);
+                const json = await res.json();
+                loader.style.display = "none";
+
+                processosEncontrados = json.processos || [];
+                prazosEncontrados = json.prazos || [];
+
+                renderizarResultados();
+            } catch (e) {
+                loader.style.display = "none";
+                mostrarModal("Erro", "Erro na pesquisa: " + e.message);
+            }
+        }, 300); // Debounce de 300ms
+    }
+
+    // --- RENDERIZAÇÃO DE RESULTADOS COM PAGINAÇÃO ---
+    function renderizarResultados() {
+        const divRes = document.getElementById('resultadoBusca');
+        let html = "";
+
+        // PROCESSOS
+        if (processosEncontrados.length > 0) {
+            const processosPaginados = processosEncontrados.slice(
+                (paginaAtual - 1) * ITEMS_PER_PAGE,
+                paginaAtual * ITEMS_PER_PAGE
+            );
+            
+            html += `<div class="secao-titulo">📋 Processos Relacionados (${processosEncontrados.length})</div>
+                     <div class="table-responsive"><table>
+                     <tr><th>ID</th><th>Reclamante</th><th>Nº Processo</th><th style="text-align:right;">Ações</th></tr>`;
+            
+            processosPaginados.forEach((p, i) => {
+                const indiceReal = (paginaAtual - 1) * ITEMS_PER_PAGE + i;
+                html += `<tr><td>${p[0]}</td><td>${p[2]}</td><td>${p[4]}</td>
+                         <td class="acoes-td">
+                            <button class="btn btn-editar" onclick="prepararEdicao(${indiceReal}, 'Planilha1')">✏️</button>
+                            <button class="btn btn-excluir" onclick="excluirRegisto(${indiceReal}, 'Planilha1')">🗑️</button>
+                         </td></tr>`;
+            });
+            html += `</table></div>`;
+
+            // Paginação para processos
+            if (processosEncontrados.length > ITEMS_PER_PAGE) {
+                html += gerarPaginacao(Math.ceil(processosEncontrados.length / ITEMS_PER_PAGE), 'processos');
+            }
+        }
+
+        // PRAZOS
+        if (prazosEncontrados.length > 0) {
+            const prazosPaginados = prazosEncontrados.slice(
+                (paginaAtual - 1) * ITEMS_PER_PAGE,
+                paginaAtual * ITEMS_PER_PAGE
+            );
+            
+            html += `<div class="secao-titulo" style="color:var(--accent-color); margin-top: 30px;">⏳ Prazos do Processo (${prazosEncontrados.length})</div>
+                     <div class="table-responsive"><table>
+                     <tr><th class="th-prazos">ID</th><th class="th-prazos">Processo</th><th class="th-prazos">Data</th><th class="th-prazos">Status</th><th class="th-prazos" style="text-align:right;">Ações</th></tr>`;
+            
+            prazosPaginados.forEach((p, i) => {
+                const indiceReal = (paginaAtual - 1) * ITEMS_PER_PAGE + i;
+                let dt = p[2] ? new Date(p[2] + "T12:00:00").toLocaleDateString('pt-PT') : '---';
+                html += `<tr><td>${p[0]}</td><td>${p[1]}</td><td>${dt}</td><td>${p[4]}</td>
+                         <td class="acoes-td">
+                            <button class="btn btn-editar" onclick="prepararEdicao(${indiceReal}, 'Planilha2')">✏️</button>
+                            <button class="btn btn-excluir" onclick="excluirRegisto(${indiceReal}, 'Planilha2')">🗑️</button>
+                         </td></tr>`;
+            });
+            html += `</table></div>`;
+
+            // Paginação para prazos
+            if (prazosEncontrados.length > ITEMS_PER_PAGE) {
+                html += gerarPaginacao(Math.ceil(prazosEncontrados.length / ITEMS_PER_PAGE), 'prazos');
+            }
+        }
+
+        divRes.innerHTML = html || "<p style='text-align:center; padding:40px;'>Nenhum registo encontrado.</p>";
+    }
+
+    function gerarPaginacao(totalPaginas, tipo) {
+        let html = `<div class="pagination">`;
+        for (let i = 1; i <= totalPaginas; i++) {
+            html += `<button onclick="irParaPagina(${i})" class="${i === paginaAtual ? 'active' : ''}">${i}</button>`;
+        }
+        html += `</div><div class="pagination-info">Página ${paginaAtual} de ${totalPaginas}</div>`;
+        return html;
+    }
+
+    function irParaPagina(pagina) {
+        paginaAtual = pagina;
+        renderizarResultados();
+        document.getElementById('resultadoBusca').scrollIntoView({ behavior: 'smooth' });
     }
 
     function prepararEdicao(i, tab) {
@@ -445,11 +539,13 @@
         const p = tab === "Planilha1" ? processosEncontrados[i] : prazosEncontrados[i];
         if (!confirm(`Deseja apagar o registo ${p[0]}?`)) return;
         try {
-            const res = await fetch(URL_API, { method: "POST", body: JSON.stringify({ acao: "excluir", id: p[0], planilha: tab }) });
+            const res = await fetchComTimeout(URL_API, { method: "POST", body: JSON.stringify({ acao: "excluir", id: p[0], planilha: tab }) });
             const json = await res.json();
             mostrarModal("Aviso", json.mensagem);
             buscar();
-        } catch (e) { mostrarModal("Erro", "Falha ao excluir."); }
+        } catch (e) { 
+            mostrarModal("Erro", "Falha ao excluir: " + e.message); 
+        }
     }
 
     // --- AUXILIARES ---
@@ -467,12 +563,32 @@
     }
     function fecharModal() { document.getElementById('customModal').style.display = 'none'; }
 
+    // --- CARREGAR TUDO (Placeholder - implementar paginação no futuro) ---
+    async function carregarTudo() {
+        const loader = document.getElementById('statusTodos');
+        const divLista = document.getElementById('listaCompleta');
+        
+        loader.style.display = "block";
+        divLista.innerHTML = "";
+
+        try {
+            const res = await fetchComTimeout(`${URL_API}?acao=getTodos`);
+            const json = await res.json();
+            loader.style.display = "none";
+            
+            divLista.innerHTML = "<p style='text-align:center; padding: 20px;'>Função de carregamento completo em desenvolvimento.</p>";
+        } catch (e) {
+            loader.style.display = "none";
+            divLista.innerHTML = "<p style='text-align:center; color: var(--accent-color);'>Erro ao carregar: " + e.message + "</p>";
+        }
+    }
+
     window.onload = () => { 
-    carregarPreferencias(); 
-    atualizarStatusConexao(); 
-    alternarCampos(); 
-    tentarSincronizar(); 
-};
+        carregarPreferencias(); 
+        atualizarStatusConexao(); 
+        alternarCampos(); 
+        tentarSincronizar(); 
+    };
 </script>
 </body>
 </html>
